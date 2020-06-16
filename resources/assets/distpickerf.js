@@ -41,6 +41,8 @@
     var img_data=[];
     var img_rel_data=[];
     var uploader=null;
+    var init_img_type;
+    var init_img_data={};
 
     //视频上传 start
     var $list = $('#thelist .table'),
@@ -77,6 +79,7 @@
         }
     }
 
+    //图片或者视频大小格式化输出
     var bytesToSize=function (bytes){
         if (bytes === 0) return '0 B';
         let k = 1000, // or 1024
@@ -85,6 +88,7 @@
         return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
     }
 
+    //图片点击放大效果
     var imgShow=function (outerdiv, innerdiv, max_img, _this){
         //console.log("bsdf");
         var src = _this.attr("src");//获取当前点击的min_img元素中的src属性
@@ -124,6 +128,8 @@
             $(this).fadeOut("fast");
         });
     }
+
+    //页面加载初始已经存储的图片或者视频列表加载
     var list_append =function (image_data,image_type){
 
         // console.log(image_data);return false;
@@ -153,13 +159,15 @@
             html+='</tr>';
             //console.log(html);
 
+            //init_img_html+=html;
             img_data.push(value);
-            $("input[name='images']").val(img_data);
+            $(".images_field").val(img_data);
             $("#thelist .table").append(html);
         });
 
     }
 
+    //上传组件动态创建，同时添加监听事件
     var uploader_demo1 =function (image_type,release_type,user_id,num_limit,url,extensions){
 
         // console.log(extensions);
@@ -248,7 +256,7 @@
 
                     //console.log("img_data:remove");
                     // console.log(img_data);
-                    $("input[name='images']").val(img_data);
+                    $(".images_field").val(img_data);
                 }
 
             });
@@ -312,7 +320,7 @@
                 img_data.push(response.pic);
                 //console.log("img_data:insert");
                 //console.log(img_data);
-                $("input[name='images']").val(img_data);
+                $(".images_field").val(img_data);
             }else{
                 layer.msg(''+response.error);
             }
@@ -347,12 +355,13 @@
 
             //console.log("img_data:remove");
             //console.log(img_data);
-            $("input[name='images']").val(img_data);
+            $(".images_field").val(img_data);
         });
     }
 
 
 
+    //获取初始化图片/视频数据
     var getPcdData = function (url,id) {
         var result;
         //console.log(id);
@@ -375,8 +384,9 @@
 
     };
 
+    //显示图片还是视频标签选中
     var showImgOrVideo=function(image_type){
-        $(".box").find(".click_image").each(function () {
+        $(".box_fxn_img").find(".click_image").each(function () {
             // console.log(1);
             var id = $(this).attr("image_val");
             // console.log(id);
@@ -408,6 +418,8 @@
             // console.log(remote_img_data);return false;
             var image_type=remote_img_data.image_type;
             var images=remote_img_data.images;
+            init_img_data=images;
+            init_img_type=image_type;
             //console.log(jQuery.isEmptyObject(images));
             //console.log(images=='null');
             if(images!='null' ){
@@ -420,6 +432,7 @@
             // console.log(remote_img_data);return false;
             var image_type=0;
             var images='null';
+            init_img_type=image_type;
             //console.log(jQuery.isEmptyObject(images));
             // console.log(images=='null');
             if(images!='null' ){
@@ -439,20 +452,29 @@
             uploader.destroy();//容器对象销毁
             $('#thelist .table').find(".file-item").remove();//容易dom清空
             img_data=[];//js数组置空
-            $("input[name='images']").val(img_data);//name数据为空
+            $(".images_field").val(img_data);//name数据为空
             image_type=$(this).attr("image_val");
             //console.log($(this).attr("image_val"));
             uploader_demo1(image_type,release_type,user_id,1,url,extensions);
             showImgOrVideo(image_type);
+            if(image_type==init_img_type){
+                // alert("回来");
+                if(!isEmpty(init_img_data) ){
+                    // alert("asdf");
+                    //console.log(images,image_type);
+                    list_append(init_img_data,image_type);
+                }
+            }
 
         });
 
+        //图片放大展示
         $(document).on('click','.file-url .file_url_img',function () {
             // debugger
             //console.log("asdf");
             var _this = $(this);//将当前的min_img元素作为_this传入函数
             imgShow("#outerdiv", "#innerdiv", "#max_img", _this);
-        })
+        });
     }
 
     //step02 插件的扩展方法名称

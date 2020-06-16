@@ -18,13 +18,15 @@
             <div  ><label class="click_image" image_val="0" title="图片">图片</label><lable class="exten">&nbsp;&nbsp;格式:{{ $video_ext }}</lable></div>
 --}}
 
-            <div class="box">
-                <ul>
-                    <li>
+
+
+            <div class="box_fxn_img">
+                <ul class="uploadfile_ul">
+                    <li class="uploadfile_li">
                         <input type="radio" name="check" id="active1" class="click_image" image_val="0" title="图片" checked><label for="active1">图片</label>
                         <div >格式:{{ $img_ext }}</div>
                     </li>
-                    <li>
+                    <li class="uploadfile_li">
                         <input type="radio" name="check" id="active2" class="click_image" image_val="1" title="视频"><label for="active2">视频</label>
                         <div >格式:{{ $video_ext }}</div>
                     </li>
@@ -45,7 +47,7 @@
                     </tr>
                 </table>
                 <input type="hidden" name="image_type" value="0"/>
-                <input type="hidden" name="{{$name['images']}}" value=""/>
+                <input type="hidden" class="images_field" name="{{$name['images']}}" value=""/>
                 <!--<button type="submit" name="" value="提交"/>-->
             </div>
             <!--</form>-->
