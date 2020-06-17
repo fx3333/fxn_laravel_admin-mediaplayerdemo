@@ -362,17 +362,19 @@
 
 
     //获取初始化图片/视频数据
-    var getPcdData = function (url,id) {
+    var getPcdData = function (url,get_data) {
         var result;
         //console.log(id);
         $.ajax({
             type: 'get',
-            url: ''+url+'/'+id,
+            //url: ''+url+'/?release_type='+release_type+'&id='+id,
+            url: ''+url,
             dataType: 'json',
             async:false,
+            data:get_data,
             success: (response) => {
                 //if(Array.isArray(response)){
-                //console.log("asdf");
+                // console.log("asdf");
                 //}
                 // console.log(response);
                 // var jsonarray = eval('('+response+')');
@@ -400,7 +402,7 @@
 
     //step06-a 在插件里定义方法
     var showLink = function (obj,options) {
-        //console.log("obj_fff");
+        // console.log("obj_fff");
         img_data=[];
         var url=options.url;
         var imgurl=options.imgurl;
@@ -414,7 +416,8 @@
 
         if(product_id>0){
             //var remote_img_data=getPcdData("/api/v1/ms/getProImgsByID",product_id);
-            var remote_img_data=getPcdData(imgurl,product_id);
+            //var remote_img_data=getPcdData(imgurl,product_id,release_type);
+            var remote_img_data=getPcdData(imgurl,{id:product_id,release_type:release_type});
             // console.log(remote_img_data);return false;
             var image_type=remote_img_data.image_type;
             var images=remote_img_data.images;
@@ -489,7 +492,7 @@
         //step5 支持链式调用
         return this.each(function () {
             //step06-b 在插件里定义方法
-            // alert("asdf");
+            //alert("asdf");
             showLink(this,options);
         });
     };
