@@ -174,7 +174,7 @@ class DemoCheck extends Field
 //        $size=filesize("D:/phpstudy_pro/WWW/www.enterpriseLegend.com/public/uploads/videos\moments/202006/13/0_1592011742_AkZPUElJQb.mp4");
 //var_dump($img_ext,$video_ext);die;
 //        die;
-//测试123345345
+//测试12334534520200617
 
         $images=json_encode($images);
         $id = uniqid('uploadfile-');
